@@ -13,21 +13,32 @@ import javax.net.ssl.*;
 public class tlsclient {
     private static final String HOST = "localhost";
     private static final int PORT = 8043;
+    static char[]  passphrase = "123456".toCharArray();
+    static String TRUST_STORE = "client_truststore.jks",
+            KEY_STORE   = "client.jks";
 
-    public static void main(String[] args) throws Exception {
-        // TrustStore
-        char[] passphrase_ts = "123456".toCharArray();
+    private static TrustManager[] getTrustManagers() throws Exception {
         KeyStore ts = KeyStore.getInstance("JKS");
-        //ts.load(new FileInputStream("truststore.jks"), passphrase_ts);
-        ts.load(new FileInputStream("truststoreWolf.jks"), passphrase_ts);
+        ts.load(new FileInputStream(TRUST_STORE), passphrase);
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
         tmf.init(ts);
-        TrustManager[] trustManagers = tmf.getTrustManagers();
- 
+        return tmf.getTrustManagers();
+    }
+
+    private static KeyManager[] getKeyManagers() throws Exception {
+        KeyStore ks= KeyStore.getInstance("JKS");
+        ks.load(new FileInputStream(KEY_STORE), passphrase);
+        // Initialize a KeyManagerFactory with the KeyStore
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+        kmf.init(ks, passphrase);
+        return kmf.getKeyManagers();
+    }
+
+    public static void main(String[] args) throws Exception {
+
         SSLContext context = SSLContext.getInstance("TLSv1.3");
 
-        KeyManager[] keyManagers = null;
-        context.init(keyManagers, trustManagers, new SecureRandom());
+        context.init(getKeyManagers(), getTrustManagers(), null);
 
         SSLSocketFactory ssf = context.getSocketFactory();
         System.out.println("TLS client running");
@@ -44,7 +55,7 @@ public class tlsclient {
         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
 
-        System.out.println("\n-- Connection established. Write \"stop\" to exit --.\n");
+        System.out.println("\n-- Connection established. Write \"stop\" to exit --.");
 
         String msg = "";
         var buf = new ArrayList<String>();

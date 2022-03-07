@@ -1,0 +1,168 @@
+Keystore type: PKCS12
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+Alias name: client
+Creation date: Mar 7, 2022
+Entry type: PrivateKeyEntry
+Certificate chain length: 3
+Certificate[1]:
+Owner: CN=client, O=LTH, L=LUND, ST=SCANIA, C=SE
+Issuer: EMAILADDRESS=]wolvesca@animals.com, CN=wolvesCA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Serial number: 15fc7403ee58dc2687f1819f8367de7dd950fb13
+Valid from: Mon Mar 07 17:23:03 CET 2022 until: Tue Mar 07 17:23:03 CET 2023
+Certificate fingerprints:
+	 SHA1: 24:46:11:9F:EB:79:BD:2A:36:5A:C2:F2:1C:33:D7:BB:DC:CA:60:43
+	 SHA256: 06:FC:E1:32:76:ED:C2:54:AF:03:09:8A:B9:A1:6D:00:5C:FD:D8:C6:8A:DF:40:B2:20:CE:CC:C3:E5:F4:63:6D
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 6B 4D DD F3 98 A8 70 3A   2A 75 1B B2 ED C5 BA 1D  kM....p:*u......
+0010: C1 63 80 E2                                        .c..
+]
+]
+
+#2: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#3: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 11 BC 32 50 2E 92 5D FF   BE 7A 1D 08 F3 ED EB FE  ..2P..]..z......
+0010: 29 FF 7C 3D                                        )..=
+]
+]
+
+Certificate[2]:
+Owner: EMAILADDRESS=]wolvesca@animals.com, CN=wolvesCA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Issuer: EMAILADDRESS=ca@animals.com, CN=ANIMALS-CA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Serial number: 7def19ea2246285cc8c64c279c90b51dfc8d3acb
+Valid from: Mon Mar 07 17:22:54 CET 2022 until: Tue Mar 07 17:22:54 CET 2023
+Certificate fingerprints:
+	 SHA1: 8B:B4:41:FE:52:39:D7:CD:6B:7C:45:87:E8:CC:04:67:6D:9C:B6:B4
+	 SHA256: 4B:AE:C4:76:7A:DD:39:46:EF:F2:E6:B5:39:12:C2:3A:0B:90:C6:AA:8C:F9:F9:A7:A9:BC:EE:DB:CC:52:D4:12
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 4096-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 45 A8 64 FF FA 5A A9 C8   6B 94 21 38 95 83 B7 1F  E.d..Z..k.!8....
+0010: F9 3D 91 BD                                        .=..
+]
+]
+
+#2: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#3: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 6B 4D DD F3 98 A8 70 3A   2A 75 1B B2 ED C5 BA 1D  kM....p:*u......
+0010: C1 63 80 E2                                        .c..
+]
+]
+
+Certificate[3]:
+Owner: EMAILADDRESS=ca@animals.com, CN=ANIMALS-CA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Issuer: EMAILADDRESS=ca@animals.com, CN=ANIMALS-CA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Serial number: 5eb5877a05eb84915cad556b9fa4145d3502c299
+Valid from: Mon Mar 07 17:22:54 CET 2022 until: Fri Dec 05 17:22:54 CET 2031
+Certificate fingerprints:
+	 SHA1: 4D:F4:7C:DA:3C:87:93:62:C5:41:CA:24:D5:0F:A0:C8:5F:7F:2D:DF
+	 SHA256: 9A:36:77:28:23:DC:AF:D9:7E:BE:5B:C4:B9:8C:56:09:A2:BF:0C:4B:88:87:CD:47:0E:3C:6E:2A:BD:68:CA:BF
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 4096-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 45 A8 64 FF FA 5A A9 C8   6B 94 21 38 95 83 B7 1F  E.d..Z..k.!8....
+0010: F9 3D 91 BD                                        .=..
+]
+]
+
+#2: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#3: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 45 A8 64 FF FA 5A A9 C8   6B 94 21 38 95 83 B7 1F  E.d..Z..k.!8....
+0010: F9 3D 91 BD                                        .=..
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: rootca
+Creation date: Mar 7, 2022
+Entry type: trustedCertEntry
+
+Owner: EMAILADDRESS=ca@animals.com, CN=ANIMALS-CA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Issuer: EMAILADDRESS=ca@animals.com, CN=ANIMALS-CA, O=LTH, L=LUND, ST=SCANIA, C=SE
+Serial number: 5eb5877a05eb84915cad556b9fa4145d3502c299
+Valid from: Mon Mar 07 17:22:54 CET 2022 until: Fri Dec 05 17:22:54 CET 2031
+Certificate fingerprints:
+	 SHA1: 4D:F4:7C:DA:3C:87:93:62:C5:41:CA:24:D5:0F:A0:C8:5F:7F:2D:DF
+	 SHA256: 9A:36:77:28:23:DC:AF:D9:7E:BE:5B:C4:B9:8C:56:09:A2:BF:0C:4B:88:87:CD:47:0E:3C:6E:2A:BD:68:CA:BF
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 4096-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 45 A8 64 FF FA 5A A9 C8   6B 94 21 38 95 83 B7 1F  E.d..Z..k.!8....
+0010: F9 3D 91 BD                                        .=..
+]
+]
+
+#2: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen:2147483647
+]
+
+#3: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 45 A8 64 FF FA 5A A9 C8   6B 94 21 38 95 83 B7 1F  E.d..Z..k.!8....
+0010: F9 3D 91 BD                                        .=..
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+

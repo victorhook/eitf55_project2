@@ -11,47 +11,44 @@ import javax.net.ssl.*;
 public class tlsserver {
     // likely this port number is ok to use
     private static final int PORT = 8043;
+    static char[]  passphrase = "123456".toCharArray();
+    static String TRUST_STORE = "wolvesServer_truststore.jks",
+                  KEY_STORE   = "wolvesServer.jks";
 
-    public static void main(String[] args) throws Exception {
-        // TrustStore
-        // set necessary truststore properties - using JKS
-        //System.setProperty("javax.net.ssl.trustStore","truststore.jks");
-        //System.setProperty("javax.net.ssl.trustStorePassword","654321");
-        // OR
-        /* char[] passphrase_ts = "123456".toCharArray();
+    private static TrustManager[] getTrustManagers() throws Exception {
         KeyStore ts = KeyStore.getInstance("JKS");
-        ts.load(new FileInputStream("truststore.jks"), passphrase_ts);
+        ts.load(new FileInputStream(TRUST_STORE), passphrase);
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
         tmf.init(ts);
-        */
-        TrustManager[] trustManagers = null; //tmf.getTrustManagers();
+        return tmf.getTrustManagers();
+    }
 
-        // set up key manager to do server authentication
-        KeyManagerFactory kmf;
-        KeyStore ks;
-        // First we need to load a keystore
-        char[] passphrase = "123456".toCharArray();
-        ks = KeyStore.getInstance("JKS");
-        ks.load(new FileInputStream("server_keystore.jks"), passphrase);
+    private static KeyManager[] getKeyManagers() throws Exception {
+        KeyStore ks= KeyStore.getInstance("JKS");
+        ks.load(new FileInputStream(KEY_STORE), passphrase);
         // Initialize a KeyManagerFactory with the KeyStore
-        kmf = KeyManagerFactory.getInstance("SunX509");
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
         kmf.init(ks, passphrase);
-        KeyManager[] keyManagers = kmf.getKeyManagers();
+        return kmf.getKeyManagers();
+    }
+
+    public static void main(String[] args) throws Exception {
+        // TrustStore  set necessary truststore properties - using JKS
+        //System.setProperty("javax.net.ssl.trustStore","wolvesServer_truststore.jks");
+        //System.setProperty("javax.net.ssl.trustStorePassword","123456");
 
         // Create an SSLContext to run TLS and initialize it with
- 
         SSLContext context = SSLContext.getInstance("TLSv1.3");
-        context.init(keyManagers, trustManagers, null);
+        context.init(getKeyManagers(), getTrustManagers(), null);
 
-        // Create a SocketFactory that will create SSL server sockets.
         SSLServerSocketFactory ssf = context.getServerSocketFactory();
-        // Create socket and Wait for a connection
         ServerSocket ss = ssf.createServerSocket(PORT);
 
         while (true) {
             try {
                 System.out.println("Waiting for connection...");
                 SSLSocket s = (SSLSocket)ss.accept();
+                s.setNeedClientAuth(true);
                 System.out.println("New Connection, waiting for input...");
                 //s.setNeedClientAuth​(true);
 
@@ -76,6 +73,7 @@ public class tlsserver {
                     out.flush();
                 }
 
+                System.out.println("Connection closed.");
                 out.close();
                 in.close();
                 s.close();
