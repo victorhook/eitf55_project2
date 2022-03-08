@@ -24,8 +24,8 @@ keyUsage = keyAgreement, keyEncipherment, digitalSignature
 
 # Create directory structure
 create_dir_structure() {
-    cp ../${CONF} .
-    mkdir demoCA
+    #cp ../${CONF} .
+    #mkdir demoCA
     cd demoCA
     echo "01" > serial
     touch index.txt
@@ -33,9 +33,9 @@ create_dir_structure() {
     cd ..
 }
 
-
 clean() {
-    rm -rf demoCA *.crt *.csr *.jks *.key *.srl
+    rm -rf *.crt *.csr *.jks *.srl
+    rm -rf demoCA/newcerts/* demoCA/index* demoCA/serial*
 }
 
 
@@ -43,15 +43,17 @@ echo "> Generating directory structure"
 clean
 create_dir_structure
 
+
 # Generate keys
 echo "> Generating RSA keys"
-openssl genrsa -out demoCA/CA.key 4096
-openssl genrsa -out wolvesCA.key 4096
-openssl genrsa -out sheepCA.key 4096
+#openssl genrsa -out demoCA/CA.key 4096
+#openssl genrsa -out wolvesCA.key 4096
+#openssl genrsa -out sheepCA.key 4096
+
 
 # Self-sign certificate for root CA
 echo "> Self-sign root CA certificate"
-openssl req -x509 -new -key demoCA/CA.key -days 3560 -config ${CONF} -out demoCA/CA.crt -subj ${CA_ROOT}
+#openssl req -x509 -new -key demoCA/CA.key -days 3560 -config ${CONF} -out demoCA/CA.crt -subj ${CA_ROOT}
 
 # Generate certificate requests for subCA's
 echo "> Create CSR for subCA's"
@@ -65,7 +67,7 @@ openssl x509 -req -days 365 -in sheepCA.csr -CA demoCA/CA.crt -CAkey demoCA/CA.k
 
 # Create keys for servers, with java keytool.
 echo "> Generating RSA keys for servers, version 3"
-keytool -genkey -dname ${SERVER_wolves} -alias wolvesServer -keystore wolvesServer.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
+keytool -genkey -dname ${SERVER_wolves} -ext "SAN=IP:10.100.0.1" -alias wolvesServer -keystore wolvesServer.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
 keytool -genkey -dname ${SERVER_wolves2} -alias wolvesServer2 -keystore wolvesServer2.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
 keytool -genkey -dname ${SERVER_sheep} -alias sheepServer -keystore sheepServer.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
 echo "> Generating RSA key for client"
@@ -77,8 +79,8 @@ keytool -genkey -dname ${SERVER_test} -alias testServer -keystore testServer.jks
 
 # Generate certificate requests for servers
 echo "> Generating csr for servers..."
-keytool -certreq -alias wolvesServer -ext san=DNS:localhost -keystore wolvesServer.jks -file wolvesServer.csr -storepass ${PASSWORD}
-keytool -certreq -alias wolvesServer2 -ext san=DNS:apes.animals.com -keystore wolvesServer2.jks -file wolvesServer2.csr -storepass ${PASSWORD}
+keytool -certreq -alias wolvesServer -ext san=dns:localhost -keystore wolvesServer.jks -file wolvesServer.csr -storepass ${PASSWORD}
+keytool -certreq -alias wolvesServer2 -ext san="DNS:apes.animals.com,dns:localhost" -keystore wolvesServer2.jks -file wolvesServer2.csr -storepass ${PASSWORD}
 keytool -certreq -alias sheepServer -ext san=DNS:localhost -keystore sheepServer.jks -file sheepServer.csr -storepass ${PASSWORD}
 keytool -certreq -alias wolvesServer_v1 -ext san=DNS:localhost -keystore wolvesServer_v1.jks -file wolvesServer_v1.csr -storepass ${PASSWORD}
 keytool -certreq -alias sheepServer_v1 -ext san=DNS:localhost -keystore sheepServer_v1.jks -file sheepServer_v1.csr -storepass ${PASSWORD}
@@ -88,8 +90,8 @@ keytool -certreq -alias client -ext san=DNS:localhost -keystore client.jks -file
 
 # Sign certificate requests
 echo "> Signing csr for servers"
-openssl x509 -req -days 365 -in wolvesServer.csr -CA wolvesCA.crt -CAkey wolvesCA.key -CAcreateserial -next_serial -out wolvesServer.crt -extfile ${CONF} -extensions v3_ca
-openssl x509 -req -days 365 -in wolvesServer2.csr -CA wolvesCA.crt -CAkey wolvesCA.key -CAcreateserial -next_serial -out wolvesServer2.crt -extfile ${CONF} -extensions v3_ca
+openssl ca -batch -days 60 -create_serial -keyfile wolvesCA.key -cert wolvesCA.crt -extensions v3_req -config openssl.cnf -extfile server_v3.txt -notext -out wolvesServer.crt -infiles wolvesServer.csr
+openssl ca -batch -days 60 -create_serial -keyfile wolvesCA.key -cert wolvesCA.crt -extensions v3_req -config openssl.cnf -extfile server_v3.txt -notext -out wolvesServer2.crt -infiles wolvesServer2.csr
 openssl x509 -req -days 365 -in sheepServer.csr -CA sheepCA.crt -CAkey sheepCA.key -CAcreateserial -next_serial -out sheepServer.crt -extfile ${CONF} -extensions v3_ca
 openssl x509 -req -days 365 -in wolvesServer_v1.csr -CA wolvesCA.crt -CAkey wolvesCA.key -CAcreateserial -next_serial -out wolvesServer_v1.crt
 openssl x509 -req -days 365 -in sheepServer_v1.csr -CA sheepCA.crt -CAkey sheepCA.key -CAcreateserial -next_serial -out sheepServer_v1.crt

@@ -67,7 +67,7 @@ public class webserver extends TLSConnection {
 
             // initialise the HTTPS server
             HttpsServer httpsServer = HttpsServer.create(address, 0);
-            SSLContext context = SSLContext.getInstance("TLSv1.3");
+            SSLContext context = SSLContext.getInstance("TLSv1.2");
 
             System.out.println("Web server started...");
 
@@ -76,20 +76,21 @@ public class webserver extends TLSConnection {
             httpsServer.setHttpsConfigurator(new HttpsConfigurator(context) {
                 public void configure(HttpsParameters params) {
                     try {
-                        // initialise the SSL context
+                        System.out.println("Configure params");
                         SSLContext context = getSSLContext();
                         SSLEngine engine = context.createSSLEngine();
-                        params.setNeedClientAuth(false);
-                        params.setCipherSuites(engine.getEnabledCipherSuites());
                         params.setProtocols(engine.getEnabledProtocols());
+
+                        //for (var s: params.getCipherSuites()) System.out.println(s);
 
                         // Set the SSL parameters
                         SSLParameters sslParameters = context.getSupportedSSLParameters();
-                        sslParameters.setNeedClientAuth(false); 
                         params.setSSLParameters(sslParameters);
+                        sslParameters.setNeedClientAuth(true);
 
                     } catch (Exception ex) {
                         System.out.println("Failed to create HTTPS port");
+                        ex.printStackTrace();
                     }
                 }
             });

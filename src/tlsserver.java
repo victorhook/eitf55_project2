@@ -18,7 +18,7 @@ public class tlsserver extends TLSConnection {
                 "wolvesServer_truststore.jks",
                 //"client_truststoreWolf.jks",
                 //"client_truststoreSheep.jks",
-                "wolvesServer2.jks",
+                "wolvesServer.jks",
                 true
         );
     }

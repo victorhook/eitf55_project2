@@ -1,73 +1,70 @@
-Certificate[1]:
-Owner: EMAILADDRESS=wolvesca@animals.com, CN=wolvesCA, O=LTH, L=LUND, ST=SCANIA, C=SE
-Issuer: EMAILADDRESS=ca@animals.com, CN=ANIMALS-CA, O=LTH, L=LUND, ST=SCANIA, C=SE
-Serial number: 5fa854e5ea0958cec616eb201584936400412e81
-Valid from: Tue Mar 08 11:02:03 CET 2022 until: Wed Mar 08 11:02:03 CET 2023
-Certificate fingerprints:
-	 SHA1: EF:D3:C2:B2:1C:51:78:23:F7:84:E3:B3:19:62:79:AB:46:68:ED:14
-	 SHA256: 97:DD:89:C6:41:44:92:B8:56:B1:56:88:0E:51:69:1B:1D:20:A6:D1:F2:74:84:FA:24:38:E8:7A:80:C1:27:0B
-Signature algorithm name: SHA256withRSA
-Subject Public Key Algorithm: 4096-bit RSA key
-Version: 3
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:C = SE, ST = SCANIA, O = LTH, CN = wolvesServer2
+   i:C = SE, ST = SCANIA, L = LUND, O = LTH, CN = wolvesCA, emailAddress = wolvesca@animals.com
+ 1 s:C = SE, ST = SCANIA, L = LUND, O = LTH, CN = wolvesCA, emailAddress = wolvesca@animals.com
+   i:C = SE, ST = SCANIA, L = LUND, O = LTH, CN = ANIMALS-CA, emailAddress = ca@animals.com
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIEtjCCAp6gAwIBAgIBAjANBgkqhkiG9w0BAQsFADBzMQswCQYDVQQGEwJTRTEP
+MA0GA1UECBMGU0NBTklBMQ0wCwYDVQQHEwRMVU5EMQwwCgYDVQQKEwNMVEgxETAP
+BgNVBAMTCHdvbHZlc0NBMSMwIQYJKoZIhvcNAQkBFhR3b2x2ZXNjYUBhbmltYWxz
+LmNvbTAeFw0yMjAzMDgxMjI5MDlaFw0yMjA1MDcxMjI5MDlaMEQxCzAJBgNVBAYT
+AlNFMQ8wDQYDVQQIEwZTQ0FOSUExDDAKBgNVBAoTA0xUSDEWMBQGA1UEAxMNd29s
+dmVzU2VydmVyMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKaLeSAG
+EccANk6FHwNr6YoSvSnvRvT7D3NC3bAf7+S7EVdINnrw3WCe5AKKXp5RilRjUBD2
+wjPPecMAknG2CdF0hBMD+OLwoKkM+VemeM0C36MvrMsB0yrfdPhoJEcZJgaX0Rsr
+b7r+fYuIf+Y4vyMP3nqRQztwSPYIzPHeo7o9QDSAxl2z/zwwpAy5SF43gF592KYI
+ZhN/a1MTdVsDgX6RXMIKNVNzRr6JcUaQd4PKbt0Pc57cf2TUppadm04po4Yf+GGo
+eUbzKHcl+gLspJK551TAco7j2HmpMwVTG9z0qLXCes3RUx2F5NYVVjr97N+YrpM1
+yWGONPfS63lhg2UCAwEAAaOBgzCBgDAfBgNVHSMEGDAWgBSceXDPMGhT6kMuN2/Y
+4EG5UOuhEjAJBgNVHRMEAjAAMAsGA1UdDwQEAwIDqDAdBgNVHQ4EFgQUbWVbGBjV
+PIp6xvzElp0MokP2vxMwJgYDVR0RBB8wHYIQYXBlcy5hbmltYWxzLmNvbYIJbG9j
+YWxob3N0MA0GCSqGSIb3DQEBCwUAA4ICAQByy/zFM3pIvgfiKJJNy+lZIIOMkvNQ
+3V3XYI/Qn/S4dqcG63p3iJ4Y+HzkVV1A+vkJAbo0wb2YRcQKcHmSKKEwCzTIsYAG
+C4iytzf806Dn1eLpV7xoYh+OEfsJPQM7C4wJZ6MI8VvlOOKEPI67bY6mRk1TR3Is
+Q/Rn9t0lGAgsHt5YYXyzW2ScucxhKSH9sjVDS3OEE+zyeEe6TQZ8lJUVsmm39I10
+KojLlHq1ELvA3moY6byPxZ45KqTs/nNfiy+oua2CepOmbsqJm6q0N0RCxikTRQoz
+0fAb8vZ1uDJgP7atYP1iiPTM5Y9za6GjlppL7dqqqbkoxEeXkbb+LXdAU5Au2Cbk
+IOn1cBn98YhulaDEy0AtFjVXtGTUvbPffBzwRg5zDtrgu2jjV7F//V5RwtKuSXxj
+LoD7xn0zr58DOXw3tL9syU/DBYC3ZXEVucZ4RImL/9CKoex48PyCfgof724EpNxT
+HGarkFrMmh8HFOykXHyenVONtY1qotlHufqIx5C0PrPowphMQVQ94K/oAVxP6Pbs
+CD0Xm5jmUzOH/Np4DolBbm2JGaa9WVpnUTrXGYWH4eU996nHUV2m/s7Q8q7lLjRr
+JNb7RyB6nvFzf+CAJeuF92XGpRsmZWDXSsVvjw2TAZe5MC8uJ/eftSeDs+T4EydR
+UxFdW9IGOFUJQQ==
+-----END CERTIFICATE-----
+subject=C = SE, ST = SCANIA, O = LTH, CN = wolvesServer2
 
-Extensions: 
+issuer=C = SE, ST = SCANIA, L = LUND, O = LTH, CN = wolvesCA, emailAddress = wolvesca@animals.com
 
-#1: ObjectId: 2.5.29.35 Criticality=false
-AuthorityKeyIdentifier [
-KeyIdentifier [
-0000: E0 DD 8F 46 B6 64 47 CC   00 03 99 1B 95 80 8E 1B  ...F.dG.........
-0010: E2 4D DA F9                                        .M..
-]
-]
-
-#2: ObjectId: 2.5.29.19 Criticality=true
-BasicConstraints:[
-  CA:true
-  PathLen:2147483647
-]
-
-#3: ObjectId: 2.5.29.14 Criticality=false
-SubjectKeyIdentifier [
-KeyIdentifier [
-0000: 9D 23 F6 A5 68 A0 13 74   92 45 13 86 A4 19 E1 81  .#..h..t.E......
-0010: 8E 05 C6 05                                        ....
-]
-]
-
-
-Certificate[2]:
-Owner: CN=wolvesServer2, O=LTH, L=LUND, ST=SCANIA, C=SE
-Issuer: EMAILADDRESS=wolvesca@animals.com, CN=wolvesCA, O=LTH, L=LUND, ST=SCANIA, C=SE
-Serial number: 658dd55d3bd5f33c0249a79156690f5c6f8544d4
-Valid from: Tue Mar 08 11:02:12 CET 2022 until: Wed Mar 08 11:02:12 CET 2023
-Certificate fingerprints:
-	 SHA1: 5E:D8:6A:F4:F7:C7:7C:35:3D:D3:AB:4D:51:7B:50:B3:3E:DE:E5:62
-	 SHA256: 3B:2D:AF:08:AF:2F:A8:91:7E:43:AA:63:C1:9F:90:37:55:AC:6B:A5:6A:A3:23:1A:7F:E7:8A:F4:50:1E:0A:AF
-Signature algorithm name: SHA256withRSA
-Subject Public Key Algorithm: 2048-bit RSA key
-Version: 3
-
-Extensions: 
-
-#1: ObjectId: 2.5.29.35 Criticality=false
-AuthorityKeyIdentifier [
-KeyIdentifier [
-0000: 9D 23 F6 A5 68 A0 13 74   92 45 13 86 A4 19 E1 81  .#..h..t.E......
-0010: 8E 05 C6 05                                        ....
-]
-]
-
-#2: ObjectId: 2.5.29.19 Criticality=true
-BasicConstraints:[
-  CA:true
-  PathLen:2147483647
-]
-
-#3: ObjectId: 2.5.29.14 Criticality=false
-SubjectKeyIdentifier [
-KeyIdentifier [
-0000: D8 36 77 26 B2 DF 0B 48   0F 34 CE F0 67 5A 5D CA  .6w&...H.4..gZ].
-0010: 43 80 84 16                                        C...
-]
-]
-
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: RSA-PSS
+Server Temp Key: X25519, 253 bits
+---
+SSL handshake has read 3147 bytes and written 281 bytes
+Verification: OK
+---
+New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384
+Server public key is 2048 bit
+Secure Renegotiation IS supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+SSL-Session:
+    Protocol  : TLSv1.2
+    Cipher    : ECDHE-RSA-AES256-GCM-SHA384
+    Session-ID: 791DD75B23FC1E94FB02E6B06B81E4DEC30588F46A7FEC19F15F68758F6EBC77
+    Session-ID-ctx: 
+    Master-Key: BE335993A38279208376A9E0F2FE1F953E8CE974EC5818E4FEF7B0374B3F09FEB13A092323E3D14A86C1491625BBABDB
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    Start Time: 1646747135
+    Timeout   : 7200 (sec)
+    Verify return code: 0 (ok)
+    Extended master secret: yes
+---
