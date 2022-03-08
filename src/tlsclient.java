@@ -10,46 +10,34 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.net.ssl.*;
 
-public class tlsclient {
-    private static final String HOST = "localhost";
-    private static final int PORT = 8043;
-    static char[]  passphrase = "123456".toCharArray();
-    static String TRUST_STORE = "client_truststore.jks",
-            KEY_STORE   = "client.jks";
+public class tlsclient extends TLSConnection {
+    private final String HOST = "localhost";
+    private final int PORT = 8043;
 
-    private static TrustManager[] getTrustManagers() throws Exception {
-        KeyStore ts = KeyStore.getInstance("JKS");
-        ts.load(new FileInputStream(TRUST_STORE), passphrase);
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-        tmf.init(ts);
-        return tmf.getTrustManagers();
-    }
-
-    private static KeyManager[] getKeyManagers() throws Exception {
-        KeyStore ks= KeyStore.getInstance("JKS");
-        ks.load(new FileInputStream(KEY_STORE), passphrase);
-        // Initialize a KeyManagerFactory with the KeyStore
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-        kmf.init(ks, passphrase);
-        return kmf.getKeyManagers();
+    public tlsclient() {
+        super(
+                "123456",
+                //"dolly_truststore.jks",
+                "client_truststoreWolf.jks",
+                //"client_truststoreSheep.jks",
+                //"cheat.jks",
+                "dolly.jks"
+        );
     }
 
     public static void main(String[] args) throws Exception {
+        new tlsclient().run();
+    }
 
+    public void run() throws Exception {
         SSLContext context = SSLContext.getInstance("TLSv1.3");
-
         context.init(getKeyManagers(), getTrustManagers(), null);
 
         SSLSocketFactory ssf = context.getSocketFactory();
         System.out.println("TLS client running");
         SSLSocket s = (SSLSocket) ssf.createSocket(HOST, PORT);
-        //s.socket.setEnabledCipherSuites(cipher_suites);
-        SSLSession session = s.getSession();
-        Certificate[] cchain = session.getPeerCertificates();
-        System.out.println("The Certificates used by peer");
-        for (int i = 0; i < cchain.length; i++) {
-            System.out.println(((X509Certificate) cchain[i]).getSubjectDN());
-        };
+
+        printCert(s);
 
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -76,5 +64,5 @@ public class tlsclient {
         out.close();
         s.close();
     }
+
 }
-// ==========================================================================

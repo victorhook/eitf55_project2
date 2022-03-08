@@ -28,11 +28,12 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsExchange;
 
-public class webserver {
+public class webserver extends TLSConnection {
 
     public static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
+            System.out.println("New connection!");
             String response = "This is the servers' response";
             HttpsExchange httpsExchange = (HttpsExchange) t;
             t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
@@ -42,15 +43,23 @@ public class webserver {
             os.close();
         }
     }
-    /**
-     * pick a free port
-     */
+
     static int port=8043;
 
-    /**
-     * @param args
-     */
+    webserver() {
+        super(
+                "123456",
+                "wolvesServer_truststore.jks",
+                "wolvesServer2.jks",
+                false
+        );
+    }
+
     public static void main(String[] args) throws Exception {
+        new webserver().run();
+    }
+
+    public void run() throws Exception {
 
         try {
             // setup the socket address
@@ -58,28 +67,13 @@ public class webserver {
 
             // initialise the HTTPS server
             HttpsServer httpsServer = HttpsServer.create(address, 0);
-            SSLContext sslContext = SSLContext.getInstance("TLSv1.3");
+            SSLContext context = SSLContext.getInstance("TLSv1.3");
 
-            // initialise the keystore
-            char[] password = "123456".toCharArray();
-            KeyStore ks = KeyStore.getInstance("JKS");
-            FileInputStream fis = new FileInputStream("srv-keystore.jks");
-            ks.load(fis, password);
-
-            // setup the key manager factory
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-            kmf.init(ks, password);
-
-            // setup the trust manager factory
-            char[] passphrase_ts = "654321".toCharArray();
-            KeyStore ts = KeyStore.getInstance("JKS");
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-            ts.load(new FileInputStream("truststore.jks"), passphrase_ts);
-            tmf.init(ts);
+            System.out.println("Web server started...");
 
             // setup the HTTPS context and parameters
-            sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
-            httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+            context.init(getKeyManagers(), getTrustManagers(), null);
+            httpsServer.setHttpsConfigurator(new HttpsConfigurator(context) {
                 public void configure(HttpsParameters params) {
                     try {
                         // initialise the SSL context
@@ -108,7 +102,6 @@ public class webserver {
             System.out.print(port);
             System.out.println(" of localhost");
             exception.printStackTrace();
-
         }
     }
 

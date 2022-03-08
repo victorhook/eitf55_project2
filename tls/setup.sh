@@ -3,9 +3,10 @@
 CONF=openssl.cnf
 CA_ROOT_DIR=demoCA
 CA_ROOT="/C=SE/ST=SCANIA/L=LUND/O=LTH/CN=ANIMALS-CA/emailAddress=ca@animals.com"
-CA_wolves="/C=SE/ST=SCANIA/L=LUND/O=LTH/CN=wolvesCA/emailAddress=]wolvesca@animals.com"
+CA_wolves="/C=SE/ST=SCANIA/L=LUND/O=LTH/CN=wolvesCA/emailAddress=wolvesca@animals.com"
 CA_sheep="/C=SE/ST=SCANIA/L=LUND/O=LTH/CN=sheepCA/emailAddress=sheep@animals.com"
 SERVER_wolves="CN=wolvesServer,O=LTH,L=LUND,ST=SCANIA,C=SE"
+SERVER_wolves2="CN=wolvesServer2,O=LTH,L=LUND,ST=SCANIA,C=SE"
 SERVER_sheep="CN=sheepServer,O=LTH,L=LUND,ST=SCANIA,C=SE"
 SERVER_test="CN=testServer,O=LTH,L=LUND,ST=SCANIA,C=SE"
 CLIENT="CN=client,O=LTH,L=LUND,ST=SCANIA,C=SE"
@@ -37,9 +38,9 @@ clean() {
     rm -rf demoCA *.crt *.csr *.jks *.key *.srl
 }
 
-clean
 
 echo "> Generating directory structure"
+clean
 create_dir_structure
 
 # Generate keys
@@ -55,7 +56,7 @@ openssl req -x509 -new -key demoCA/CA.key -days 3560 -config ${CONF} -out demoCA
 # Generate certificate requests for subCA's
 echo "> Create CSR for subCA's"
 openssl req -new -key wolvesCA.key -config openssl.cnf -out wolvesCA.csr -subj ${CA_wolves}
-openssl req -new -key sheepCA.key -config openssl.cnf -out sheepCA.csr -subj ${CA_wolves}
+openssl req -new -key sheepCA.key -config openssl.cnf -out sheepCA.csr -subj ${CA_sheep}
 
 # Sign certificate requests from subCA's with roots key.
 echo "> Sign subCA's CSR with root CA"
@@ -65,6 +66,7 @@ openssl x509 -req -days 365 -in sheepCA.csr -CA demoCA/CA.crt -CAkey demoCA/CA.k
 # Create keys for servers, with java keytool.
 echo "> Generating RSA keys for servers, version 3"
 keytool -genkey -dname ${SERVER_wolves} -alias wolvesServer -keystore wolvesServer.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
+keytool -genkey -dname ${SERVER_wolves2} -alias wolvesServer2 -keystore wolvesServer2.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
 keytool -genkey -dname ${SERVER_sheep} -alias sheepServer -keystore sheepServer.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
 echo "> Generating RSA key for client"
 keytool -genkey -dname ${CLIENT} -alias client -keystore client.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
@@ -76,6 +78,7 @@ keytool -genkey -dname ${SERVER_test} -alias testServer -keystore testServer.jks
 # Generate certificate requests for servers
 echo "> Generating csr for servers..."
 keytool -certreq -alias wolvesServer -ext san=DNS:localhost -keystore wolvesServer.jks -file wolvesServer.csr -storepass ${PASSWORD}
+keytool -certreq -alias wolvesServer2 -ext san=DNS:apes.animals.com -keystore wolvesServer2.jks -file wolvesServer2.csr -storepass ${PASSWORD}
 keytool -certreq -alias sheepServer -ext san=DNS:localhost -keystore sheepServer.jks -file sheepServer.csr -storepass ${PASSWORD}
 keytool -certreq -alias wolvesServer_v1 -ext san=DNS:localhost -keystore wolvesServer_v1.jks -file wolvesServer_v1.csr -storepass ${PASSWORD}
 keytool -certreq -alias sheepServer_v1 -ext san=DNS:localhost -keystore sheepServer_v1.jks -file sheepServer_v1.csr -storepass ${PASSWORD}
@@ -86,6 +89,7 @@ keytool -certreq -alias client -ext san=DNS:localhost -keystore client.jks -file
 # Sign certificate requests
 echo "> Signing csr for servers"
 openssl x509 -req -days 365 -in wolvesServer.csr -CA wolvesCA.crt -CAkey wolvesCA.key -CAcreateserial -next_serial -out wolvesServer.crt -extfile ${CONF} -extensions v3_ca
+openssl x509 -req -days 365 -in wolvesServer2.csr -CA wolvesCA.crt -CAkey wolvesCA.key -CAcreateserial -next_serial -out wolvesServer2.crt -extfile ${CONF} -extensions v3_ca
 openssl x509 -req -days 365 -in sheepServer.csr -CA sheepCA.crt -CAkey sheepCA.key -CAcreateserial -next_serial -out sheepServer.crt -extfile ${CONF} -extensions v3_ca
 openssl x509 -req -days 365 -in wolvesServer_v1.csr -CA wolvesCA.crt -CAkey wolvesCA.key -CAcreateserial -next_serial -out wolvesServer_v1.crt
 openssl x509 -req -days 365 -in sheepServer_v1.csr -CA sheepCA.crt -CAkey sheepCA.key -CAcreateserial -next_serial -out sheepServer_v1.crt
@@ -98,12 +102,14 @@ openssl x509 -req -days 0 -in wolvesServer.csr -CA wolvesCA.crt -CAkey wolvesCA.
 # Create chains
 echo "> Creating certificate chains..."
 cp wolvesCA.crt chain.crt && cat wolvesServer.crt >> chain.crt
+cp wolvesCA.crt chain2.crt && cat wolvesServer2.crt >> chain2.crt
 cp wolvesCA.crt chain_client.crt && cat client.crt >> chain_client.crt
 cp wolvesCA.crt chain_test.crt && cat testServer.crt >> chain_test.crt
 cp wolvesCA.crt chain_expired.crt && cat wolvesServer_expired.crt >> chain_expired.crt
 
 echo "> Import certificates with into keystore (server)..."
 keytool -noprompt -importcert -file chain.crt -keystore wolvesServer.jks -storepass ${PASSWORD} -alias wolvesServer
+keytool -noprompt -importcert -file chain2.crt -keystore wolvesServer2.jks -storepass ${PASSWORD} -alias wolvesServer2
 keytool -noprompt -importcert -file chain_test.crt -keystore testServer.jks -storepass ${PASSWORD} -alias other
 
 echo "> Import certificates with into keystore (client)..."
@@ -119,6 +125,7 @@ keytool -noprompt -import -file demoCA/CA.crt -alias rootCA -trustcacerts -keyst
 echo "> Import certificates into truststore (client)..."
 keytool -noprompt -import -file demoCA/CA.crt -alias rootCA -trustcacerts -keystore client_truststore.jks -storepass ${PASSWORD}
 keytool -noprompt -import -file wolvesCA.crt -alias wolfCA -trustcacerts -keystore client_truststoreWolf.jks -storepass ${PASSWORD}
+keytool -noprompt -import -file sheepCA.crt -alias sheepCA -trustcacerts -keystore client_truststoreSheep.jks -storepass ${PASSWORD}
 
 echo "> Creating client dolly..."
 keytool -genkey -dname ${DOLLY} -alias dolly -keystore dolly.jks -keyalg RSA -sigalg Sha256withRSA -storepass ${PASSWORD}
@@ -128,10 +135,13 @@ cp sheepCA.crt chain_dolly.crt && cat dolly.crt >> chain_dolly.crt
 keytool -noprompt -importcert -file chain_dolly.crt -keystore dolly.jks -storepass ${PASSWORD} -alias dolly
 keytool -noprompt -import -file demoCA/CA.crt -alias rootCA -trustcacerts -keystore dolly_truststore.jks -storepass ${PASSWORD}
 
-echo "> Copying keystores and truststores into source dir"
+echo "> Copying keystores and truststores into source dir..."
 cp wolvesServer.jks ../src/
+cp wolvesServer2.jks ../src/
 cp wolvesServer_truststore.jks ../src/
 cp client.jks ../src/
 cp client_truststore.jks ../src/
 cp dolly.jks ../src/
 cp dolly_truststore.jks ../src/
+cp client_truststoreWolf.jks ../src/
+cp client_truststoreSheep.jks ../src/
